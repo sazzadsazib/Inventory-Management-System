@@ -1,0 +1,98 @@
+CSE370 Database Query List:
+
+DATABASE CREATION:
+
+create database CSE370project
+
+TABLE CREATION:
+
+use cse370project;
+
+create table customer(customerId varchar(15),customerName varchar(15),customerHouseNo varchar(15),customerRoadNo varchar(15),customerCity varchar(15),customerLocation varchar(15),customerPhone varchar(20),customerEmail varchar(25),primary key (customerId),unique (customerId));
+
+create table orderlist(orderId varchar(15),customerId varchar(15),orderDate date,orderPayementType varchar(15),totalAmountPayement decimal(10),primary key (orderId),unique (orderId),foreign key (customerId) references customer );
+
+create table product(productId varchar(15),productName varchar(25),productStock decimal(10),productPrice decimal(10),primary key (productId),unique (productId));
+
+create table supplier(supplierId varchar(15),supplierName varchar(15),primary key (supplierId),unique (supplierId));
+
+create table suppliercontactinfo(supplierId varchar(15) not null,supplierHouseNo int,supplierRoadNo int,supplierCity varchar(15),supplierLocation varchar(15),supplierPhone varchar(15),supplierEmail varchar(15),foreign key (supplierId) references supplier );
+
+create table supplierbankaccountinfo(supplierId varchar(15) not null ,bank varchar(15),accountNo varchar(15),foreign key (supplierId) references supplier );
+
+create table orderproduct(orderId varchar(15) not null,productId varchar(15) not null,quantity decimal(10),totalPrice decimal(10),foreign key (orderId) references orderlist,foreign key (productId) references product);
+
+create table supplyproduct(supplierId varchar(15) not null,productId varchar(15) not null,supplyDate date,costPrice decimal(10),foreign key (supplierId) references supplier,foreign key (productId) references product);
+
+
+ADD:
+
+*Insertion for customer table is just shown. Insertion for rest of the tables are same.
+
+INSERT INTO `cse370project`.`customer` (`customerId`, `customerName`, `customerHouseNo`, `customerRoadNo`, `customerCity`, `customerLocation`, `customerPhone`, `customerEmail`) VALUES ( '"+Cid+"', '"+cn+"', '"+chn+"', '"+crn+"', '"+cc+"', '"+cl+"', '"+cp+"', '"+ce+"');
+
+DELETE:
+
+*General fromat for deletion is shown.
+DELETE FROM `"+tbl+"` WHERE `"+id+"`='"+key+"';
+
+EDIT:
+
+*General fromat for update is shown.
+UPDATE `cse370project`.`"+tbl+"` SET `"+att+"` = '"+val+"' WHERE `"+tbl+"`.`"+id+"` = '"+key+"';
+
+QUERY:
+
+Data about all customers:-
+Select * from customer
+
+Total customers :- 
+select count(*) as Total_Number_of_Customers from Customer
+
+Total suppliers:-
+select count(*) as Total_Number_of_Suppliers from supplier
+
+Total products:-
+select count(*) as Total_Number_of_Products from product
+
+Most expensive product:-
+Select productId, productName,max(productPrice) as max_price from product
+
+Cheapest product:-
+Select productId, productName,min(productPrice) as min_price from product
+
+Products out of stock:-
+Select productId, productName from product where productStock<1
+
+Getting specific product information:-
+Select * from product where productId = " + id
+
+Getting specific supplier information:-
+Select * from product where supplierId = " + id
+
+Getting specific customer information:-
+Select * from product where customerId = " + id
+
+Getting specific product quantity:-
+Select productStock as Quantity_Left_In_Stock from product where productId = " + id
+
+Getting specific customer payment type:-
+Select orderDate, orderPayementType, totalAmountPayement from orderlist where customerId = " + id
+
+Getting specific supply date:
+Select distinct(supplyDate) from supplyproduct where supplierId = " + id
+
+Getting products supplied by specific supplier
+select distinct(product.productId), product.productName from supplyproduct inner join product on supplyproduct.productId = product.productId where supplyproduct.supplierId =  " + id
+
+
+
+
+
+
+
+
+
+
+
+
